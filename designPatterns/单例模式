@@ -1,1 +1,50 @@
+单例模式主要是实现创建独一无二的对象。确保只有一个实例，并且提供一个全局访问点（getSingleton）。
+简单实现：
+public class Singleton{
+    private static Singleton singleton;
+    private Singleton(){
+    }
+    public static Singleton getSingleton(){
+         if(singleton == null){
+              return new Singleton(); 
+         }
+         return singleton;
+    }
+}
+注：单例模式不能有public的construct，构造函数；
+   有个静态对象，每次getSingleton()获得的是同一个实例；
+上面的简单例子，在单线程中是完全满足的，但是在多线程中就无法达成单例模式的要求了。如果两个线程同时调用
+getSingleton(),两者都会判断出singleton==null为真，从而分别创建了两个singleton实例。 双检查实现： 
+public class Singleton{ 
+    private volatile static Singleton singleton; 
+    private Singleton(){ 
+    } 
+    public static Singleton getSingleton(){
 
+         if(singleton == null){
+              synchronized (Singleton.class){
+                   if(singleton == null){
+                         singleton = new Singleton(); 
+                   }
+              }
+             
+         }
+         return singleton;
+    }
+}
+第二段代码加入了volatitle关键字和双重锁。
+volatitle可以让变量对多个线程可见。
+方法getSingleton（）中，如果对象singleton不存在，就会进入同步代码块，在同步代码块中，只有一个线程在内部
+运行，此时再次判断singleton是否为空，对应的是每个线程内的singleton对象。
+
+另外一种方法是如果创建对象负担不重的话，可以在静态初始化的时候创建对象：
+public class Singleton{
+    private volatitle static Singleton singleton = new singleton();
+    private Singleton(){
+    }
+    public static Singleton getSingleton(){
+         
+         return singleton;
+    }
+}
+这样每次调用getSingleton()，都只会返回singleton类中唯一的static类型的实例。
