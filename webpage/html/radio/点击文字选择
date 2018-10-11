@@ -1,0 +1,6 @@
+<label>
+	<input type="radio" name="sfjcf"  value="0" checked="checked" />否
+</label>
+<label>
+	<input type="radio" name="sfjcf"  value="1" />是
+</label>
