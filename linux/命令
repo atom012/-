@@ -1,0 +1,129 @@
+LINUX命令集合
+1.	参考资料
+Linux基础命令大全：http://man.linuxde.net/
+2.	基础命令
+命令加上 - -help 可查看该命令下的所有子命令；例如
+ls –help 命令截图如下
+ 
+2.1	文件与目录
+命令	说明	举例
+cd	进入
+
+目录	cd /home  进入home目录
+		cd ..   返回上级目录
+		cd ../../  返回上两级目录
+		cd -  返回上次所在目录
+ls	查看目录中的文件	ls 查看文件目录
+		ls –f 查看目录中文件
+		ls –l 显示文件和目录的详细资料
+		ls –a 显示隐藏文件
+mkdir	创建目录	mkdir dir1 创建dir1目录
+		mkdir dir1 dir2  创建dir1 和 dir2 目录
+		mkdir –p /tmp/dir1/dir2 创建目录树 
+rm	删除目录文件	rm –f file1 删除一个叫file1的文件
+		rmdir dir1 删除一个叫dir1的文件夹
+		rm -rf dir1删除一个叫做 'dir1' 的目录并同时删除其内容
+		rm -rf dir1 dir2 同时删除两个目录及它们的内容
+mv	移动目录或文件	mv dir1 new_dir 重命名/移动 一个目录
+cp	拷贝目录或文件	cp dir/* . 复制一个目录下的所有文件到当前工作目录
+		cp -a /tmp/dir1 . 复制一个目录到当前工作目录
+		cp -a dir1 dir2 复制一个目录
+		cp file1 file2 复制一个文件
+find	文件搜索	find / -name file1 从 '/' 开始进入根文件系统搜索文件和目录
+		find / -user user1 搜索属于用户 'user1' 的文件和目录
+		find /home/me -name \*.bin 在目录 '/ home/me' 中搜索带有'.bin' 结尾的文件
+		find /usr/bin -type f -atime +100 搜索在过去100天内未被使用过的执行文件
+		find . -type f -size +100k 搜索当前目录下大于100k的文件
+		find / -name \*.rpm -exec chmod 755 '{}' \; 搜索以 '.rpm' 结尾的文件并定义其权限
+		find / -xdev -name \*.rpm 搜索以 '.rpm' 结尾的文件，忽略光驱、捷盘等可移动设备
+		whereis halt 显示一个二进制文件、源码或man的位置 
+which halt 显示一个二进制文件或可执行文件的完整路径
+
+2.2	文件解压与压缩
+命令	说明	举例
+tar	压缩解压tar.gz格式的文件 	tar zcvf abc.tar.gz ./*  将当前目录所有文件压缩为abc.tar.gz的文件
+		tar zxvf abc.tar.gz 解压abc.tar.gz 文件到当前文件夹
+其他压缩		bunzip2 file1.bz2 解压一个叫做 'file1.bz2'的文件 
+bzip2 file1 压缩一个叫做 'file1' 的文件 
+gunzip file1.gz 解压一个叫做 'file1.gz'的文件 
+gzip file1 压缩一个叫做 'file1'的文件 
+gzip -9 file1 最大程度压缩 
+rar a file1.rar test_file 创建一个叫做 'file1.rar' 的包 
+rar a file1.rar file1 file2 dir1 同时压缩 'file1', 'file2' 以及目录 'dir1' 
+rar x file1.rar 解压rar包 
+unrar x file1.rar 解压rar包 
+tar -cvf archive.tar file1 创建一个非压缩的 tarball 
+tar -cvf archive.tar file1 file2 dir1 创建一个包含了 'file1', 'file2' 以及 'dir1'的档案文件 
+tar -tf archive.tar 显示一个包中的内容 
+tar -xvf archive.tar 释放一个包 
+tar -xvf archive.tar -C /tmp 将压缩包释放到 /tmp目录下 
+tar -cvfj archive.tar.bz2 dir1 创建一个bzip2格式的压缩包 
+tar -jxvf archive.tar.bz2 解压一个bzip2格式的压缩包 
+tar -cvfz archive.tar.gz dir1 创建一个gzip格式的压缩包 
+tar -zxvf archive.tar.gz 解压一个gzip格式的压缩包 
+zip file1.zip file1 创建一个zip格式的压缩包 
+zip -r file1.zip file1 file2 dir1 将几个文件和目录同时压缩成一个zip格式的压缩包 
+unzip file1.zip 解压一个zip格式压缩包
+2.3	查看文件内容
+命令	说明	举例
+cat
+tail
+more
+less	查看文件内容	cat debug.log 从第一个字节开始正向查看debug.log文件的内容
+		tac debug.log从最后一行开始反向查看debug.log文件的内容
+		more debug.log 查看一个长文件的内容
+		less debug.log类似于 'more' 命令，但是它允许在文件中和正向操作一样的反向操作
+		tail -f debug.log 监视debug.log文件的尾部内容，默认为10行
+		tail -n 20 debug.log 显示debug.log的最后20行
+
+2.4	VIM命令
+命令	说明	举例
+vim	编辑文件	1、	打开文件
+vim debug.log
+2、	跳转到文件最后一行
+Shift g
+3、	跳转到文件第一行
+连续按gg
+4、	插入模式
+按i 键
+5、	保存退出
+先按esc 键 再输入 :wq 然后按enter键
+6、	仅退出
+先按esc 键 再输入 :q! 然后按enter键
+
+
+2.5	Pg数据库操作
+命令	说明	举例
+pgsql	数据库操作	1、	进入到pg数据库bin目录
+cd /nas/sdh_lun/kms/PostgreSQL/9.4/bin
+2、	进入到指定的数据库
+ 
+psql -h 127.0.0.1 -p 5433 -U postgres intell 表示连接IP为127.0.0.1、端口为5433、数据库名为intell、用户名为postgres 的数据库中；按提示输入密码便可进入
+3、	命令提示
+输入 \?
+4、	显示该intell库所有表
+输入 \d 命令
+ 
+5、	查询表的所有数据
+Select * from zone_info;
+ 
+6、	创建表、删除表、编辑表都与查询表类似；都可以通过常用sql命令再该状态下执行
+7、	退出数据库
+\q
+ 
+2.6	进程端口
+命令	说明	举例
+lsof	查看端口对应进程	1、lsof –i 9000  查看9000端口对应进程
+ 
+2、根据进程号杀进行进程;例如杀掉进程号为19000的进程
+kill -9 19000 
+3、查看该进程占用的内存
+top -p 19000
+然后按q可回退到命令行
+4、查看内存占用前10名的程序
+ps aux | sort -k4,4nr | head -n 10
+2.7	网络
+3.	高级命令
+3.1	创建自启动服务
+
+
